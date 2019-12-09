@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<link rel="stylesheet"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" />
+
+	<link rel="stylesheet"
+		href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"/>
+		
+	<link rel="stylesheet"
+		href="estilo.css"/>
+
+	<title>Aeroporto</title>
+</h:head>
+
+<h:body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light"> 
+		<span class="navbar-brand">
+			CodeIt Airlines
+		</span>
+		<h:form>
+			<h:commandButton class="btn btn-sm btn-primary margin_right5" value="Reiniciar" ajax="false"
+				action="#{aeroportoController.reiniciar()}" /> 
+				
+			<h:commandButton class="btn btn-sm btn-primary" value="Resolução" type="button" onclick="PF('resolucao').show();" />
+		</h:form>
+	</nav>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm">Terminal <i class="fas fa-angle-double-right"></i></div>
+			<div class="col-sm">
+				<i class="fas fa-angle-double-left"></i> Smart Fortwo <i class="fas fa-angle-double-right"></i>
+				<h:form>
+					<h:commandButton class="btn btn-sm btn-primary" value="Dirigir" ajax="false"
+						action="#{aeroportoController.andarSmartForTwo()}" />
+				</h:form>
+				<br/>
+			</div>
+			<div class="col-sm text-center"><i class="fas fa-angle-double-left"></i> Avião</div>
+		</div>
+		<div class="row altura300">
+			<div class="col-sm">
+				<h:dataTable value="#{aeroportoController.terminal}" var="terminal" rules="rows">
+					<h:column>
+						#{terminal.cargo.descricao}
+					</h:column>
+					<h:column>
+						<h:form>
+							<h:commandButton class="btn btn-success btn-sm btn-circle" value="+" ajax="false" rendered="#{aeroportoController.smartForTwoIsOnTerminal}"
+								action="#{aeroportoController.subirNoSmartForTwo(terminal)}" />
+						</h:form>
+					</h:column>
+				</h:dataTable>
+			</div>
+			<div class="col-sm">
+				<h:dataTable value="#{aeroportoController.smartForTwo}" var="smart" rules="rows">
+					<h:column>
+						<h:form>
+							<h:commandButton class="btn btn-info btn-sm btn-circle" value="-" ajax="false" rendered="#{aeroportoController.smartForTwoIsOnTerminal}"
+								action="#{aeroportoController.descerDoSmartForTwo(smart)}" />
+						</h:form>
+					</h:column>
+					<h:column>
+						#{smart.cargo}
+					</h:column>
+					<h:column>
+						<h:form>
+							<h:commandButton class="btn btn-info btn-sm btn-circle" value="-" ajax="false" rendered="#{!aeroportoController.smartForTwoIsOnTerminal}"
+								action="#{aeroportoController.descerDoSmartForTwo(smart)}" />
+						</h:form>
+					</h:column>
+				</h:dataTable>
+			</div>
+			<div class="col-sm">
+				<h:dataTable value="#{aeroportoController.aviao}" var="aviao" rules="rows">
+					<h:column>
+						<h:form>
+							<h:commandButton class="btn btn-success btn-sm btn-circle" value="+" ajax="false" rendered="#{!aeroportoController.smartForTwoIsOnTerminal}"
+								action="#{aeroportoController.subirNoSmartForTwo(aviao)}" />
+						</h:form>
+					</h:column>
+					<h:column>
+						#{aviao.cargo}
+					</h:column>
+				</h:dataTable>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm text-center">
+				#{aeroportoController.mensagem}
+			</div>
+		</div>
+	</div>
+	
+	<p:dialog header="Resolução" widgetVar="resolucao" modal="true" height="300" width="900">
+	    <span>
+	    Primeira viagem: Piloto e Oficial, deixa o Oficial no avião e retorna o Piloto.<br/>
+	    Segunda viagem: Piloto e Oficial, deixa o Oficial no avião e retorna o Piloto.<br/>
+	    Terceira viagem: Piloto e Chefe de Serviço, deixa o no Piloto no avião e retorna o Chefe de Serviço.<br/>
+	    Quarta viagem: Chefe de Serviço e Comissária, deixa a Comissária no avião e retorna o Chefe de Serviço.<br/>
+	    Quinta viagem: Chefe de Serviço e Comissária, deixa a Comissária no avião e retorna o Chefe de Serviço.<br/>
+	    Sexta viagem: Chefe de Serviço e Policial, deixa a Chefe de Serviço no avião e retorna o Policial.<br/>
+	    Sétima viagem: Policial e Presidiário e ficam os dois.<br/>
+	    </span>
+	    <br/>
+	    <h:commandButton class="btn btn-sm btn-primary" value="Fechar" type="button" onclick="PF('resolucao').hide();" />
+	</p:dialog>
+
+</h:body>
+</html>
